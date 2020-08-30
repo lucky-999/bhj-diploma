@@ -4,4 +4,7 @@
  * Имеет свойство URL со значением '/account'
  * */
 class Account {
+    static URL = '/account';
 }
+
+Account.prototype = Entity;
