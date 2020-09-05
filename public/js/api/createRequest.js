@@ -7,26 +7,18 @@ const createRequest = (options = {}) => {
     let xhr = new XMLHttpRequest();
     let formData = new FormData();
 
-    if (options.data === undefined) {
-        options.data = {};
-    }
-
     if (options.method === 'GET') {
-        
-        if (options.data.email && options.data.password) {
-            options.url += `?mail=${options.data.email}&password=${options.data.password}`;
-        } else if (options.data.id && options.data.name && options.data.email) {
-            options.url += `?id=${options.data.id}&name=${options.data.name}&mail=${options.data.email}`;
-        } else if (options.data.id && options.data.name) {
-            options.url += `?id=${options.data.id}&name=${options.data.name}`;
-        } else if (options.data.id) {
-            options.url += `?id=${options.data.id}`;
+
+        options.url += `?`
+
+        for (let data in options.data) {
+            options.url += `${data}=${options.data.data}&`
         }
 
     } else {
         
         for (let option in options.data) {
-            formData.append(`${option}`, options.data[option]);
+            formData.append(option, options.data[option]);
         }
     }
 

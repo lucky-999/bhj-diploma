@@ -26,7 +26,7 @@ class User {
    * из локального хранилища
    * */
   static current() {
-      return JSON.parse(localStorage.user);
+    return localStorage.user && JSON.parse(localStorage.user);
   }
 
   /**
