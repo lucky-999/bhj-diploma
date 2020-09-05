@@ -26,9 +26,7 @@ class User {
    * из локального хранилища
    * */
   static current() {
-    if (localStorage.user) {
       return JSON.parse(localStorage.user);
-    }
   }
 
   /**
@@ -37,7 +35,7 @@ class User {
    * */
   static fetch( data, callback = f => f) {
     let options = {data: data, url: `${this.URL}/current`, method: `GET`, responseType: 'json', callback: (err, response) => {
-      if (response.success == true) {
+      if (response.success) {
         User.setCurrent(response.user);
       } else {
         User.unsetCurrent();
@@ -55,7 +53,7 @@ class User {
    * */
   static login (data, callback = f => f) {
     let options = {data: data, url: `${this.URL}/login`, method: `POST`, responseType: 'json', callback: (err, response) => {
-      if (response.success == true) {
+      if (response.success) {
         User.setCurrent(response.user);
       }
       callback (err, response);
@@ -71,7 +69,7 @@ class User {
    * */
   static register( data, callback = f => f) {
     let options = {data: data, url: `${this.URL}/register`, method: `POST`, responseType: 'json', callback: (err, response) => {
-      if (response.success == true) {
+      if (response.success) {
         User.setCurrent(response.user);
       }
       callback(err, response);

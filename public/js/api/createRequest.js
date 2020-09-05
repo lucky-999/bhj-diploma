@@ -7,30 +7,37 @@ const createRequest = (options = {}) => {
     let xhr = new XMLHttpRequest();
     let formData = new FormData();
 
-
-    function tryRequest() {
-        try {
-            xhr.open(options.method, options.url);
-            xhr.withCredentials = true;
-            xhr.responseType = options.responseType; 
-            errorCritical = null;
-        } catch (e) {
-            errorCritical = e;
-            options.callback(erorrCritical, xhr.response);
-        }
+    if (options.data === undefined) {
+        options.data = {};
     }
 
-
     if (options.method === 'GET') {
-        options.url += `?mail=${options.data.mail}&password=${options.data.password}`;
-        tryRequest();
+        
+        if (options.data.email && options.data.password) {
+            options.url += `?mail=${options.data.email}&password=${options.data.password}`;
+        } else if (options.data.id && options.data.name && options.data.email) {
+            options.url += `?id=${options.data.id}&name=${options.data.name}&mail=${options.data.email}`;
+        } else if (options.data.id && options.data.name) {
+            options.url += `?id=${options.data.id}&name=${options.data.name}`;
+        } else if (options.data.id) {
+            options.url += `?id=${options.data.id}`;
+        }
 
     } else {
         
         for (let option in options.data) {
             formData.append(`${option}`, options.data[option]);
         }
-        tryRequest();
+    }
+
+    try {
+        xhr.open(options.method, options.url);
+        xhr.withCredentials = true;
+        xhr.responseType = options.responseType; 
+        errorCritical = null;
+    } catch (e) {
+        errorCritical = e;
+        options.callback(erorrCritical, xhr.response);
     }
 
     xhr.send(formData);
