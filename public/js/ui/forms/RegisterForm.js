@@ -3,7 +3,7 @@
  * регистрации
  * Наследуется от AsyncForm
  * */
-class RegisterForm {
+class RegisterForm extends AsyncForm {
   /**
    * Производит регистрацию с помощью User.register
    * После успешной регистрации устанавливает
@@ -11,5 +11,12 @@ class RegisterForm {
    * и закрывает окно, в котором находится форма
    * */
   onSubmit( options ) {
+     let form = document.getElementById('register-form');
+     User.register(options, () => {
+      form.reset();
+      App.setState('user-logged');
+      let modal = App.getModal('register');
+      modal.close();
+     });
   }
 }
