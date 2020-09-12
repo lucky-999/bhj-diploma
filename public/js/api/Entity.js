@@ -10,7 +10,7 @@ class Entity {
    * Это могут быть счета или доходы/расходы
    * (в зависимости от того, что наследуется от Entity)
    * */
-  static list( data, callback = ( err, response ) => console.log("err: ", err, " response: ", response) ) {
+  static list( data, callback = f => f) {
     let options = {data: data, url: `${this.URL}`, method: `GET`, responseType: 'json', callback: callback};
     createRequest(options);
   }
