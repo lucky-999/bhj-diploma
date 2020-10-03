@@ -6,6 +6,13 @@
       "password": "demo",
       "id": "1",
       "isAuthorized": false
+    },
+    {
+      "name": "1",
+      "email": "1@mail.ru",
+      "password": "123",
+      "id": "hkqmflokftv47v9",
+      "isAuthorized": false
     }
   ],
   "accounts": [
@@ -23,6 +30,11 @@
       "name": "Бизнес",
       "user_id": "1",
       "id": "3"
+    },
+    {
+      "name": "1",
+      "user_id": "hkqmflokftv47v9",
+      "id": "hkqmbo4kftv4j8i"
     }
   ],
   "transactions": [
