@@ -13,8 +13,7 @@ class CreateAccountForm extends AsyncForm {
   onSubmit( options ) {
     let form = document.getElementById('new-account-form');
     Account.create(options, () => {
-      let modal = App.getModal('createAccount');
-      modal.close();
+      App.getModal('createAccount').close();
       form.reset();
       App.update();
     })

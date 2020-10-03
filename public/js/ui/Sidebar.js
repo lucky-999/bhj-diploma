@@ -39,18 +39,17 @@ class Sidebar {
     let login = document.getElementsByClassName('menu-item_login');
     
     register[0].onclick = function() {
-      let registerButton = App.getModal('register');
-      registerButton.open();
+      App.getModal('register').open();
     }
 
     login[0].onclick = function() {
-      let loginButton = App.getModal('login');
-      loginButton.open();
+      App.getModal('login').open();
     }
     
     logout[0].onclick = function() {
-      User.logout();
-      App.setState('init');
+      User.logout({}, (err, response) => {
+        App.setState('init');
+      });
     }
   }
 

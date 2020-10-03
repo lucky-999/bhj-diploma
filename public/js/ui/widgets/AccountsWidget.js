@@ -13,7 +13,12 @@ class AccountsWidget {
    * необходимо выкинуть ошибку.
    * */
   constructor( element ) {
-
+    if (!element) {
+      throw new Error('Ошибка! Пустой элемент');
+    }
+    this.element = element;
+    this.registerEvents();
+    this.update();
   }
 
   /**
@@ -24,8 +29,16 @@ class AccountsWidget {
    * вызывает AccountsWidget.onSelectAccount()
    * */
   registerEvents() {
-
+    
+    this.element.onclick = (e) => {
+      if (e.target.closest('.create-account')) {
+        App.getModal('createAccount').open();
+      } else if (e.target.closest('.account')) {
+        this.onSelectAccount(e.target);
+      }
+    }
   }
+
 
   /**
    * Метод доступен только авторизованным пользователям
@@ -38,7 +51,13 @@ class AccountsWidget {
    * метода renderItem()
    * */
   update() {
-
+    let user = User.current();
+    if (user) {
+      Account.list(user, (err, response) => {
+        this.clear();
+        this.renderItem(response.data)
+      });
+    }
   }
 
   /**
@@ -47,7 +66,10 @@ class AccountsWidget {
    * в боковой колонке
    * */
   clear() {
-
+    let accounts = this.element.querySelectorAll('.account');
+    for (let account of accounts) {
+      account.remove();
+    }
   }
 
   /**
@@ -58,7 +80,13 @@ class AccountsWidget {
    * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
    * */
   onSelectAccount( element ) {
-
+    let last = this.element.querySelector('.active');
+    if (last) {
+      last.classList.remove('active');
+    }
+    let account = element.closest('.account');
+    account.classList.add('active');
+    App.showPage('transactions', {account_id: account.dataset.id});
   }
 
   /**
@@ -67,7 +95,11 @@ class AccountsWidget {
    * item - объект с данными о счёте
    * */
   getAccountHTML( item ) {
-
+    let elem = document.createElement('li');
+    elem.classList.add('account');
+    elem.dataset.id = item.id;
+    elem.innerHTML = `<a href="#"><span>${item.name} / ${item.sum} ₽</span></a>`;
+    return elem;
   }
 
   /**
@@ -77,6 +109,9 @@ class AccountsWidget {
    * и добавляет его внутрь элемента виджета
    * */
   renderItem( item ) {
-
+    for (let elem of item) {
+      let readyElem = this.getAccountHTML(elem);
+      this.element.insertAdjacentElement('beforeEnd', readyElem);
+    }
   }
 }
